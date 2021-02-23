@@ -1,14 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
+import Home from './Home.js';
 
 function App() {
   return (
     <div className="App">
-      <h1>
-          Cat Pictures
-      </h1>
-      <button onclick={fetchAll}>See All</button>
-      <button onclick={fetchById}>Pick By Id</button>
+        <Home />
     </div>
   );
 }
