@@ -1,4 +1,11 @@
 import React from 'react';
+import * as dotenv from 'dotenv';
+
+interface imageObject {
+    id: number;
+    title: string;
+    url: string;
+}
 
 class Home extends React.Component {
     state = {
@@ -7,16 +14,17 @@ class Home extends React.Component {
     };
 
     componentDidMount() {
+        dotenv.config();
         this.fetchAll();
     }
 
     fetchAll = () => {
-        const apiUrl = 'http://localhost:3000/all';
-        let imageList = [];
+        const apiUrl = `${process.env.REACT_APP_API_URL}/all`;
+        let imageList: imageObject[] = [];
         fetch(apiUrl)
             .then((response) => response.json())
             .then((data) => {
-                data.forEach((element) => {
+                data.forEach((element: imageObject) => {
                     imageList.push(element);
                 });
                 this.setState({ allImages: imageList });
@@ -28,10 +36,9 @@ class Home extends React.Component {
         this.setState({ selectedImages: this.state.allImages });
     };
 
-    fetchById = (event) => {
+    fetchById = (event: any) => {
         const id = event.target.value;
-        // let id = 5;
-        const apiUrl = `http://localhost:3000/id/${id}`;
+        const apiUrl = `${process.env.REACT_APP_API_URL}/id/${id}`;
         fetch(apiUrl)
             .then((response) => response.json())
             .then((data) => {
@@ -47,7 +54,7 @@ class Home extends React.Component {
                     <h2>Pick By Title:</h2>
                     <select onChange={this.fetchById}>
                         <option>Select a title</option>
-                        {this.state.allImages.map((i) => (
+                        {this.state.allImages.map((i: imageObject) => (
                             <option value={i.id} key={i.id}>
                                 {i.title}
                             </option>
@@ -55,7 +62,7 @@ class Home extends React.Component {
                     </select>
                 </div>
                 <div id="image-grid">
-                    {this.state.selectedImages.map((image) => (
+                    {this.state.selectedImages.map((image: imageObject) => (
                         <img key={image.id} src={image.url} alt={image.title} />
                     ))}
                 </div>
